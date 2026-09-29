@@ -26,7 +26,7 @@ Semantic Handoff
 
 This repository is the **clean public entry point** for GitHub Context Bridge. Experimental and heavy-use development remains in the separate development repository.
 
-## Design principle
+## Quickstart\n\nまず5分で試す場合は、[Quickstart](QUICKSTART.md) を参照してください。\n\nこのPrototypeは、GitHubの状態を読む → Evidenceとして保持する → ThreadRPGで読む、という最短体験を目的としています。\n\n## Design principle
 
 > Do not translate only the words. Preserve the context that makes the words meaningful.
 
