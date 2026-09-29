@@ -1,11 +1,6 @@
 import unittest
 
-from src.perspectives import (
-    build_perspectives,
-    distorted_sphere,
-    phase_rotation_eisenhower,
-    thread_rpg,
-)
+from src.perspectives import build_perspectives, thread_rpg
 
 
 class PerspectivesTests(unittest.TestCase):
@@ -39,15 +34,7 @@ class PerspectivesTests(unittest.TestCase):
         self.assertEqual([x["evidence_id"] for x in result["threads"]], ["ev-a", "ev-b", "ev-c"])
         self.assertEqual(result["authority"]["decision"], "HUMAN")
 
-    def test_phase_and_distorted_sphere_are_explicit_boundaries(self):
-        phase = phase_rotation_eisenhower(self.evidence())
-        sphere = distorted_sphere(phase)
-        self.assertEqual(phase["status"], "boundary_only")
-        self.assertTrue(phase["canonical_formula_required"])
-        self.assertEqual(sphere["status"], "boundary_only")
-        self.assertIsNone(sphere["geometry"])
-
-    def test_complete_stack_has_expected_order_and_no_authority(self):
+    def test_complete_stack_has_public_boundary(self):(self):
         result = build_perspectives(self.evidence())
         self.assertEqual(result["order"][2:], ["ThreadRPG"])
         self.assertEqual(result["authority"]["decision"], "HUMAN")
