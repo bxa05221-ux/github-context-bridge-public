@@ -39,7 +39,8 @@ def semantic_handoff(context: dict) -> dict:
     """Create a read-only Context handoff envelope.
 
     The envelope identifies evidence and preserves the Human Gate.
-    It is not an authorization object.
+    It intentionally does not embed the full Context, avoiding recursive
+    structures and keeping the handoff unit explicit and portable.
     """
     return {
         "handoff_type": "semantic_context",
@@ -49,7 +50,6 @@ def semantic_handoff(context: dict) -> dict:
             for item in context.get("evidence", [])
             if item.get("evidence_id")
         ],
-        "context": context,
         "authority": {
             "decision": "HUMAN",
             "repository_mutation": False,
