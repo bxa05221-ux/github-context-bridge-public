@@ -122,21 +122,13 @@ def build_context(snapshot: dict, explanation_level: int = 1, language: str = "j
     explanation_level changes presentation depth only.
     """
     observations = observe_repository(snapshot)
-    conference = hold_maintenance_conference(observations)
     level = max(1, min(5, int(explanation_level)))
     profile = build_user_profile(language=language, explanation_level=level)
 
     context = {
         "mode": "read_only",
         "runtime_boundary": {
-            "profile": "lightweight_core",
-            "heavy_use_boundary": True,
-            "heavy_use_tasks": [
-                "3D位相回転アイゼンハーワーマトリクス",
-                "歪天球の数学・幾何処理",
-                "大規模Context再構成",
-                "深いEvidence比較・検証",
-            ],
+            "profile": "public_core",
             "handoff": "semantic_handoff",
             "authority": "HUMAN",
             "repository_mutation": False,
@@ -165,7 +157,6 @@ def build_context(snapshot: dict, explanation_level: int = 1, language: str = "j
         }),
         "roles": [asdict(item) for item in observations],
         "evidence": [item.to_evidence() for item in observations],
-        "保守安価": conference,
         "human_gate": {
             "required": True,
             "authority": "HUMAN",
@@ -181,7 +172,7 @@ def build_context(snapshot: dict, explanation_level: int = 1, language: str = "j
 
 if __name__ == "__main__":
     example = {
-        "repository": "bxa05221-ux/github-context-bridge",
+        "repository": "bxa05221-ux/github-context-bridge-public",
         "files": ["README.md", "protocols/github-japanese-context-bridge-v0.1.md"],
         "issues": [],
         "pull_requests": [],
