@@ -4,7 +4,7 @@
 
 GitHub Context Bridge is an application experiment for making GitHub repository state understandable through conversation.
 
-It is designed around role-based observation, evidence separation, a cross-role conference layer called **保守安価（担当者間会議）**, and a Human Gate that keeps final decisions with the human.
+It is designed around role-based observation, evidence separation, a public perspective layer called **ThreadRPG**, and a Human Gate that keeps final decisions with the human.
 
 ## Core flow
 
@@ -15,9 +15,9 @@ GitHub
   ↓
 Evidence
   ↓
-保守安価（担当者間会議）
+ThreadRPG
   ↓
-統合Context
+Semantic Handoff
   ↓
 人間
   ↓
@@ -45,7 +45,7 @@ AI may observe, explain, compare, and organize evidence. It does not become the 
 - **ルール担当** — Protocol and specification alignment
 - **最終判断** — Human decision
 
-When several roles are involved, their observations are brought together in **保守安価**. Agreement, disagreement, missing evidence, and items requiring human confirmation are kept visible.
+When several roles are involved, their observations are preserved as parallel evidence in **ThreadRPG**. Agreement, disagreement, missing evidence, and items requiring human confirmation remain visible.
 
 ## Progressive explanation
 
@@ -55,7 +55,7 @@ The same Context can be presented at different depths without changing its evide
 Level 1  plain       → 状態を普通の日本語で理解
 Level 2  contextual  → なぜそう言えるか
 Level 3  technical   → Evidence / 技術構造
-Level 4  protocol    → 担当者構造 / 保守安価
+Level 4  protocol    → 担当者構造 / Evidence
 Level 5  deep        → Context / Protocol / Human Gate
 ```
 
@@ -138,38 +138,21 @@ For pull requests, the bridge can preserve evidence such as:
 
 The lineage is descriptive, not causal speculation. It does not turn a sequence of GitHub artifacts into an approval or recommendation.
 
-## Lightweight core / heavy-use boundary
+## Public boundary
 
-The normal bridge runtime is intentionally lightweight.
+The public runtime intentionally stops at the ThreadRPG perspective layer.
 
-It handles:
-
-- GitHub observation;
-- Evidence creation and stable Evidence IDs;
-- the public perspective layer, currently ThreadRPG;
-- Semantic Handoff;
-- Human Gate preservation.
-
-Heavier processing is kept at a separate boundary and can be invoked only when needed. The current boundary reserves this for:
-
-- 3D位相回転アイゼンハーワーマトリクス;
-- 歪天球の mathematical / geometric processing;
-- large-scale Context reconstruction;
-- deep Evidence comparison and verification.
-
-The handoff is semantic, not an authorization handoff:
-
-```
-Lightweight Core
-      ↓
+```text
+Evidence
+   ↓
+ThreadRPG
+   ↓
 Semantic Handoff
-      ↓
-Heavy-use Model / Process
-      ↓
+   ↓
 Human Gate
 ```
 
-The heavy-use boundary does not change the core authority invariant. No model is required to make repository decisions, and no heavy processing step receives repository mutation authority by virtue of receiving Context.
+Deeper Shirakami processing remains outside this public repository. This is a publication boundary, not a claim about the broader Shirakami model.
 
 ## Relationship to Shirakami
 
@@ -192,7 +175,7 @@ The intended execution is:
 
     GITHUB_TOKEN=... python -m src.self_observe
 
-The runner reads the repository, issues, pull requests, commits, and recent GitHub Actions workflow runs, then passes those observations through the role layer and **保守安価（担当者間会議）** into a read-only Context.
+The runner reads the repository, issues, pull requests, commits, and recent GitHub Actions workflow runs, then passes those observations through the role layer into a read-only Context.
 
 It does not create or modify GitHub state.
 
@@ -206,7 +189,9 @@ The repository can therefore begin testing the bridge against itself: **GitHub C
        ↓
     Role Observation
        ↓
-    保守安価（担当者間会議）
+    ThreadRPG
+       ↓
+    Semantic Handoff
        ↓
     Context
        ↓
