@@ -23,7 +23,7 @@ class ContextBridgeTest(unittest.TestCase):
     def test_read_only_human_gate(self):
         context = build_context(self.snapshot())
         self.assertEqual(context["mode"], "read_only")
-        self.assertEqual(context["runtime_boundary"]["profile"], "lightweight_core")
+        self.assertEqual(context["runtime_boundary"]["profile"], "public_core")
         self.assertEqual(context["runtime_boundary"]["handoff"], "semantic_handoff")
         self.assertEqual(context["runtime_boundary"]["authority"], "HUMAN")
         self.assertFalse(context["runtime_boundary"]["repository_mutation"])
