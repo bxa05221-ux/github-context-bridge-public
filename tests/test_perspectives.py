@@ -34,9 +34,9 @@ class PerspectivesTests(unittest.TestCase):
         self.assertEqual([x["evidence_id"] for x in result["threads"]], ["ev-a", "ev-b", "ev-c"])
         self.assertEqual(result["authority"]["decision"], "HUMAN")
 
-    def test_complete_stack_has_public_boundary(self):(self):
+    def test_complete_stack_has_public_boundary(self):
         result = build_perspectives(self.evidence())
-        self.assertEqual(result["order"][2:], ["ThreadRPG"])
+        self.assertEqual(result["order"], ["ThreadRPG"])
         self.assertEqual(result["authority"]["decision"], "HUMAN")
         self.assertFalse(result["authority"]["repository_mutation"])
 
