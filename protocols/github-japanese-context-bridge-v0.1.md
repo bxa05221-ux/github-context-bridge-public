@@ -1,259 +1,65 @@
-# GitHub Japanese Context Bridge v0.1
+# GitHub Context Bridge Public Protocol v0.1
 
 ## 1. Purpose
 
-GitHub Japanese Context Bridge is an application experiment of Shirakami Project.
+GitHub Context Bridge presents GitHub repository state as human-readable context.
+It does not mechanically translate words; it preserves evidence, uncertainty,
+and the boundary between explanation and human decision.
 
-Its purpose is not to translate GitHub mechanically from English into Japanese. It places Shirakami between GitHub and the human user so that GitHub's language, state, and evidence can be presented in a human-readable Japanese context.
-
-```
+```text
 GitHub
   ↓
 Observation
   ↓
 Evidence
   ↓
-Context / Language Protocol
+ThreadRPG
   ↓
-Japanese Explanation
+Semantic Handoff
   ↓
 Human Gate
 ```
 
 The human remains the decision authority.
 
-## 2. Problem Definition
+## 2. Scope
 
-GitHub presents repository state through English UI text, technical terminology, issues, pull requests, workflow results, notifications, and other artifacts.
-
-A literal translation does not necessarily communicate:
-
-- what happened;
-- what is confirmed;
-- what is inferred;
-- what action is being requested;
-- what action would change repository state;
-- what requires human judgment.
-
-Therefore the bridge treats Japanese presentation as a **context transformation**, not merely a translation task.
-
-## 3. Human-readable Roles
-
-The bridge should not expose internal agent names or personas as the primary user interface. Instead, each observation function is presented as a clear Japanese role describing its responsibility.
-
-| Internal source | Display role | Responsibility |
-|---|---|---|
-| Issue | **問題・要望担当** | 何を解決したいのか、何が求められているのかを整理する |
-| Code | **プログラム担当** | 実際のプログラムと関連する実装を確認する |
-| Pull Request | **変更担当** | 何を変更しようとしているのかを整理する |
-| CI / Workflow | **自動テスト担当** | 自動処理・テストの結果を確認する |
-| Commit | **作業履歴担当** | いつ、何が変更されたかを確認する |
-| Evidence | **事実確認担当** | 確認できる事実と未確認事項を分離する |
-| Protocol | **ルール担当** | 定義された仕様・手順との整合性を確認する |
-| Human Gate | **最終判断** | 採用・変更・保留などを人間が判断する |
-
-Technical terms may be shown parenthetically when useful, for example **自動テスト担当（CI）** or **変更担当（Pull Request / PR）**. The role description remains the primary explanation.
-
-Roles are observers and reporters, not independent decision authorities. Multiple roles may contribute to one context record.
-
-## 4. 担当者間会議（保守安価）
-
-複数の担当が関係するGitHub事象では、各担当の観測を持ち寄る担当者間会議を設ける。これを白神では**保守安価**と呼ぶ。
-
-保守安価の役割は、担当者の代わりに判断することではなく、観測結果を照合し、共通点・相違点・未確認事項を整理して、人間が判断できるContextへまとめることである。
-
-```
-問題・要望担当 ─┐
-プログラム担当 ─┤
-変更担当 ─────┤
-自動テスト担当 ─┤
-作業履歴担当 ───┤
-事実確認担当 ───┤
-ルール担当 ─────┘
-          ↓
-       保守安価
-   （担当者間会議）
-          ↓
-    統合されたContext
-          ↓
-       最終判断
-```
-
-保守安価の役割は以下を明示する。
-
-- 各担当の観測結果
-- 観測間で一致している事項
-- 観測間で食い違っている事項
-- 証拠が不足している事項
-- 人間による確認または判断が必要な事項
-
-保守安価自身は、マージ、採用、却下その他の最終決定を行わない。
-
-会議の発言は、事実・解釈・未知を混同しない。担当者間で意見が一致しない場合も、その不一致自体をContextとして保持する。
-
-## 5. Scope
-
-### Phase A — Read-only context
-
-The bridge may observe:
+The public prototype is read-only. It may observe:
 
 - repository metadata;
-- branches;
-- commits;
+- files and implementation;
 - issues;
 - pull requests;
-- changed files;
-- review state;
+- commits;
 - workflow / CI results;
-- relevant GitHub terminology.
+- reviews and changed files where available.
 
-It produces Japanese explanations without changing GitHub state.
+It produces explanations and structured Context without changing repository state.
 
-### Phase B — Evidence-aware explanation
+## 3. Evidence boundary
 
-Each explanation should distinguish, where applicable:
+Observations are classified so that the bridge does not silently turn one kind
+of information into another:
 
-- `FACT` — directly observed GitHub information;
-- `INTERPRETATION` — contextual explanation;
-- `UNKNOWN` — information not established by the available evidence;
-- `ACTION` — an available GitHub operation;
-- `HUMAN_GATE` — a decision reserved for the human.
+- FACT — directly observed information;
+- INTERPRETATION — contextual explanation;
+- UNKNOWN — not established by available evidence;
+- ACTION — an operation that may exist, not permission to perform it;
+- HUMAN_GATE — a decision reserved for the human.
 
-### Phase C — Interactive assistance
+If evidence is missing, the public runtime keeps the state as UNKNOWN.
 
-After validation of Phase A/B, the bridge may assist with navigation, drafting, or other reversible operations.
+## 4. Evidence IDs and Semantic Handoff
 
-Any operation that changes repository state remains behind a Human Gate unless an explicit protocol authorizes otherwise.
+Each observation is materialized as an Evidence record with a deterministic
+evidence_id. The identifier tracks the observation across the handoff; it
+does not grant authority.
 
-## 5.5 Human-facing language layer
-
-The internal observation structure is not the default user interface.
-
-The bridge SHOULD maintain two presentation layers:
-
-1. **Internal Context**
-   - preserves role names;
-   - preserves `FACT`, `INTERPRETATION`, `UNKNOWN`, `ACTION`, and `HUMAN_GATE`;
-   - preserves disagreements and missing evidence;
-   - is suitable for protocol validation and machine processing.
-
-2. **Human-facing explanation**
-   - uses ordinary Japanese as the default;
-   - does not expose internal role names unless the user asks for the underlying structure;
-   - explains technical terms only when they are needed;
-   - states unknowns naturally, such as 「まだ確認できていません」;
-   - never turns fluent wording into stronger certainty than the evidence supports;
-   - does not recommend a repository-changing decision.
-
-For example, an internal observation such as:
-
-```
-自動テスト担当 / UNKNOWN / workflow evidence unavailable
-```
-
-may be presented as:
-
-> 自動テストの結果は、まだ確認できていません。
-
-The internal evidence boundary remains intact even when the user-facing explanation is simple.
-
-## 5.6 Progressive explanation
-
-The bridge MAY expose the same Context at different explanation depths. The depth changes presentation only; it MUST NOT change evidence, observations, authorization, or Human Gate requirements.
-
-The default profile has five levels:
-
-| Level | Name | User-facing purpose |
-|---|---|---|
-| 1 | plain | 普通の日本語で現在の状態を理解する |
-| 2 | contextual | なぜそう説明できるかを理解する |
-| 3 | technical | Evidenceと技術構造を確認する |
-| 4 | protocol | 担当者構造と保守安価を確認する |
-| 5 | deep | Context / Protocol / Human Gateの構造を確認する |
-
-The user may move between levels explicitly, for example:
-
-- 「簡単に」 → Level 1
-- 「もう少し詳しく」 → Level 2
-- 「Evidenceを見せて」 → Level 3
-- 「担当者の構造を見せて」 → Level 4
-- 「内部構造まで見せて」 → Level 5
-
-The progression is:
-
-- **user-controlled** — the user can request the depth;
-- **reversible** — the user can move back to a simpler level;
-- **transparent** — the current level is identifiable;
-- **evidence-invariant** — changing level does not change the underlying evidence;
-- **authority-invariant** — changing level does not grant repository-changing authority.
-
-The bridge MUST NOT silently infer a user's competence from a single interaction and use that inference to alter authority or evidence. If automatic progression is added later, it should remain transparent and reversible.
-
-The design goal is:
-
-> **Do not remove technical language. Put technical language behind a protocol that the user can reveal when it becomes useful.**
-
-The interface should grow with the user's own understanding, while the underlying Context remains stable.
-
-## 6. Translation Rule
-
-The bridge should preserve technical identifiers and repository semantics.
-
-Examples:
-
-- Pull Request → PR（プルリクエスト）
-- merge → マージ（変更を対象ブランチへ統合）
-- commit → コミット（変更履歴）
-- branch → ブランチ（作業系統）
-- workflow → ワークフロー（自動処理）
-
-Terminology may be explained, but identifiers such as repository names, branch names, commit SHAs, issue numbers, and PR numbers must not be translated.
-
-## 7. Context Record
-
-A future implementation SHOULD represent a GitHub observation in a structure equivalent to:
-
-```yaml
-source: github
-resource_type: pull_request
-resource_id: "PR#123"
-observed_at: "timestamp"
-
-role:
-  display_name: "変更担当"
-  internal_source: "pull_request"
-
-facts:
-  - type: state
-    value: open
-  - type: review
-    value: requested
-
-interpretation:
-  - "PR #123 is awaiting review."
-
-actions:
-  - "review"
-  - "comment"
-
-human_gate:
-  required: true
-  reason: "Review and merge decisions belong to the human."
-```
-
-This record is a context handoff unit, not an authorization to act.
-
-## 7.5 Evidence ID and Semantic Handoff
-
-Each role observation is materialized as an Evidence record with a deterministic `evidence_id`.
-
-The record preserves `protocol_version`, role, source, type, and observation. The Evidence ID identifies the observation used by the Context handoff. It is not an authorization token and does not grant permission to change GitHub.
-
-The bridge also exposes a read-only Semantic Handoff envelope containing the protocol version, the Evidence IDs carried forward, and an explicit authority boundary:
+The handoff envelope preserves:
 
 ```yaml
 handoff_type: semantic_context
-protocol_version: github-japanese-context-bridge-v0.1
+protocol_version: github-context-bridge-public-v0.1
 evidence_ids:
   - "ev-..."
 authority:
@@ -261,103 +67,12 @@ authority:
   repository_mutation: false
 ```
 
-This creates an explicit boundary between:
+## 5. Public perspective boundary
 
-`Observation → Evidence → Semantic Handoff → Human Gate`
+The public runtime exposes ThreadRPG as its current perspective layer.
 
-and repository mutation.
-
-## 8. Evidence Boundary
-
-The bridge MUST NOT silently convert:
-
-- translation into fact;
-- interpretation into fact;
-- suggestion into authorization;
-- AI output into repository state;
-- repository state into human approval.
-
-The distinction between observation and interpretation is part of the protocol.
-
-## 9. Human Gate
-
-The bridge may explain what GitHub can do.
-
-It does not decide what the human should do.
-
-```
-GitHub state
-    ↓
-Shirakami observation
-    ↓
-Role-based Japanese context
-    ↓
-担当者間会議（保守安価）
-    ↓
-Human judgment
-    ↓
-Optional GitHub operation
-```
-
-## 9.5 Action Boundary
-
-Observation capability is not repository mutation authority.
-
-The current runtime declares:
-
-```yaml
-mode: read_only
-action_boundary:
-  repository_mutation: false
-  human_gate_required: true
-```
-
-Repository-changing operations are therefore outside the read-only Context runtime. The Context may describe available operations, but describing an operation does not authorize or execute it.
-
-## 10. Verification
-
-A prototype should be tested against real GitHub artifacts using a fixed set of cases:
-
-1. repository overview;
-2. issue with a clear request;
-3. PR awaiting review;
-4. PR with CI failure;
-5. PR with changed files;
-6. merge-ready PR;
-7. ambiguous English wording;
-8. terminology that has multiple Japanese interpretations.
-
-For each case, the evaluator should be able to compare the original GitHub evidence with the Japanese context and identify any semantic loss or unsupported inference.
-
-The role labels themselves should also be evaluated for comprehension by GitHub beginners.
-
-The prototype should additionally test whether the担当者間会議（保守安価） can accurately surface agreement, disagreement, and missing evidence without creating an unsupported conclusion.
-
-## 11. Non-goals
-
-This protocol does not attempt to:
-
-- replace GitHub's official UI;
-- replace GitHub's own documentation;
-- create a general-purpose machine translation system;
-- give AI authority over repository decisions;
-- conceal uncertainty behind fluent Japanese.
-
-## 12. Shirakami Principle
-
-> **Do not translate only the words. Preserve the context that makes the words meaningful.**
-
-GitHub Japanese Context Bridge is therefore an application test of the Shirakami proposition:
-
-> **AI is a simulator, not an authority.**
-
-The bridge should make GitHub easier to understand while keeping the repository, evidence, and final decision under human control.
-
-
-## 7.6 Public Perspective Boundary
-
-The public GitHub Context Bridge exposes **ThreadRPG** as its current
-perspective layer over stable Evidence.
+ThreadRPG keeps observations visible in parallel while preserving their
+Evidence IDs and uncertainty.
 
 ```text
 Evidence
@@ -369,17 +84,86 @@ Semantic Handoff
 Human Gate
 ```
 
-ThreadRPG expands Evidence horizontally so that different roles and
-observations remain visible in parallel.
+The public protocol intentionally stops at this layer. Deeper processing is
+outside the public runtime and is not required to use this bridge.
 
-Deeper Shirakami perspective layers are intentionally outside this public
-GitHub bridge protocol. Their absence is a publication boundary, not a claim
-that they do not exist in Shirakami.
+## 6. Human Gate
 
-The public runtime therefore keeps the authority invariant:
+The bridge may explain repository state and describe available operations.
+It does not turn explanation into authorization.
 
 ```text
-Observation → Evidence → ThreadRPG → Semantic Handoff → Human Gate
+Observed GitHub state
+       ↓
+Evidence
+       ↓
+ThreadRPG
+       ↓
+Semantic Handoff
+       ↓
+Human judgment
+       ↓
+Optional repository operation
 ```
 
-ThreadRPG processing is not repository mutation authority.
+The current public runtime declares:
+
+```yaml
+mode: read_only
+action_boundary:
+  repository_mutation: false
+  human_gate_required: true
+```
+
+## 7. Presentation
+
+Language and explanation depth are presentation choices. Changing them must not
+change Evidence, UNKNOWN states, or Human Gate requirements.
+
+Current prototype languages:
+
+- ja — 日本語
+- en — English
+
+Additional languages can be added as presentation profiles without changing
+the underlying Evidence or authority boundary.
+
+The prototype supports progressive explanation levels from plain status to
+technical/protocol detail. The level is user-controlled and reversible.
+
+## 8. Change lineage
+
+The bridge may reconstruct descriptive relationships among GitHub artifacts:
+
+```text
+Issue
+  ↓
+Pull Request
+  ↓
+Commit
+  ↓
+Workflow
+  ↓
+Merge
+```
+
+A relationship is recorded as CONFIRMED only when available evidence
+establishes it. Otherwise it remains UNKNOWN. The sequence is descriptive;
+it is not approval or causal speculation.
+
+## 9. Non-goals
+
+The public protocol does not attempt to:
+
+- replace GitHub or its documentation;
+- become a general-purpose translation system;
+- grant AI authority over repository decisions;
+- conceal uncertainty behind fluent language;
+- execute repository-changing operations from the read-only runtime.
+
+## 10. Core principle
+
+> Do not translate only the words. Preserve the context that makes the words meaningful.
+
+The public bridge is a practical GitHub entry point: lightweight to try,
+explicit about evidence, and bounded by human authority.
