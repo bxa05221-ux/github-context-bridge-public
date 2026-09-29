@@ -1,0 +1,61 @@
+schema:
+  name: "GitHub Context Bridge Role Observation"
+  version: "0.1"
+
+principles:
+  read_only: true
+  decision_authority: "HUMAN"
+  preserve_unknowns: true
+  preserve_disagreement: true
+
+observation:
+  required:
+    - role
+    - source
+    - type
+    - observation
+  type:
+    enum:
+      - FACT
+      - INTERPRETATION
+      - UNKNOWN
+      - ACTION
+      - HUMAN_GATE
+
+roles:
+  問題・要望担当:
+    source: "GitHub Issues"
+  プログラム担当:
+    source: "repository files"
+  変更担当:
+    source: "GitHub Pull Requests"
+  自動テスト担当:
+    source: "GitHub Actions"
+  作業履歴担当:
+    source: "GitHub Commits"
+  事実確認担当:
+    source: "cross-source verification"
+  ルール担当:
+    source: "repository protocols"
+
+conference:
+  name: "保守安価"
+  function:
+    - "collect role observations"
+    - "separate facts from interpretations"
+    - "surface unknowns"
+    - "surface disagreements"
+    - "prepare integrated context"
+  forbidden:
+    - "approve merge"
+    - "approve release"
+    - "change repository state"
+    - "replace Human Gate"
+
+human_gate:
+  required: true
+  authority:
+    - "merge"
+    - "release"
+    - "publication"
+    - "other consequential repository changes"

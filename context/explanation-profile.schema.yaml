@@ -1,0 +1,47 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: "GitHub Context Bridge Explanation Profile"
+type: object
+required:
+  - level
+  - name
+  - purpose
+  - user_controlled
+  - language
+properties:
+  language:
+    type: string
+    enum: ["ja", "en"]
+  level:
+    type: integer
+    minimum: 1
+    maximum: 5
+  name:
+    type: string
+  purpose:
+    type: string
+  user_controlled:
+    type: boolean
+  reversible:
+    type: boolean
+  transparent:
+    type: boolean
+description: >
+  Controls presentation language and depth only. It MUST NOT change evidence,
+  observations, authorization, or Human Gate requirements.
+
+levels:
+  1:
+    name: plain
+    purpose: "普通の日本語で現在の状態を理解する"
+  2:
+    name: contextual
+    purpose: "なぜそう説明できるかを理解する"
+  3:
+    name: technical
+    purpose: "Evidenceと技術構造を確認する"
+  4:
+    name: protocol
+    purpose: "担当者構造と保守安価を確認する"
+  5:
+    name: deep
+    purpose: "Context / Protocol / Human Gateの構造を確認する"

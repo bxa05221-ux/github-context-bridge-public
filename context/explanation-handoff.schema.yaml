@@ -1,0 +1,40 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: "Explanation Handoff"
+type: object
+required:
+  - from_level
+  - from_language
+  - to_language
+  - to_level
+  - requested_by
+  - reason
+  - evidence_invariant
+properties:
+  from_language:
+    type: string
+    enum: ["ja", "en"]
+  to_language:
+    type: string
+    enum: ["ja", "en"]
+  from_level:
+    type: integer
+    minimum: 1
+    maximum: 5
+  to_level:
+    type: integer
+    minimum: 1
+    maximum: 5
+  requested_by:
+    type: string
+    enum: ["human"]
+  reason:
+    type: string
+  evidence_invariant:
+    const: true
+  authority_invariant:
+    const: true
+  authority_invariant:
+    const: true
+description: >
+  Records a user-controlled change in explanation depth.
+  This is a presentation handoff, not an authorization or evidence change.
