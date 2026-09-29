@@ -25,7 +25,7 @@ class RealWorldValidationTests(unittest.TestCase):
         self.assertTrue(context["semantic_handoff"]["evidence_ids"])
         self.assertEqual(context["semantic_handoff"]["authority"]["decision"], "HUMAN")
         self.assertFalse(context["semantic_handoff"]["authority"]["repository_mutation"])
-        self.assertEqual(context["runtime_boundary"]["profile"], "lightweight_core")
+        self.assertEqual(context["runtime_boundary"]["profile"], "public_core")
         self.assertEqual(context["perspectives"]["order"], ["ThreadRPG"])
 
         workflow = next(item for item in context["evidence"] if item["role"] == "自動テスト担当")
