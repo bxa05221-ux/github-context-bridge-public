@@ -1,0 +1,161 @@
+matome:
+  title: "第三者リポジトリ観測：Everything Claude Code"
+  codename: "ECC Observation / Shirakami Context Bridge"
+  status: "observed"
+  date: "2026-09-29"
+  landscape:
+    repository: "dbunt1tled/everything-claude-code"
+    upstream_identity:
+      package_name: "ecc-universal"
+      version: "2.0.0"
+      license: "MIT"
+    described_scope:
+      agents: 67
+      skills: 277
+      commands: 92
+      automated_hook_workflows: true
+    observation_mode: "read_only"
+  observation:
+    authority: "HUMAN"
+    repository_mutation: false
+    inference_policy:
+      unknown_stays_unknown: true
+      intent_inference: false
+      author_competence_inference: false
+    roles:
+      - role: "問題・要望担当"
+        source: "AGENTS.md"
+        type: "repository_guideline"
+        status: "CONFIRMED"
+        evidence_id: "ev-1c49fe6c6d8c2ef8"
+        observation: "ECCはproduction-ready AI coding pluginとして説明され、67 specialized agents、277 skills、92 commands、automated hook workflowsを提供すると記載されている。"
+      - role: "ルール担当"
+        source: "AGENTS.md"
+        type: "human_workflow_rule"
+        status: "CONFIRMED"
+        evidence_id: "ev-18589492e6899287"
+        observation: "Plan Before Executeを原則に含め、planner、architect、code-reviewer、security-reviewer、loop-operator等の役割分担を定義している。"
+      - role: "自動テスト担当"
+        source: "AGENTS.md"
+        type: "testing_rule"
+        status: "CONFIRMED"
+        evidence_id: "ev-0e374f9590cfdc45"
+        observation: "最低80% coverageを要求し、RED → GREEN → IMPROVEのTDD workflowを定義している。"
+      - role: "事実確認担当"
+        source: "skills/loop-design-check/SKILL.md"
+        type: "human_judgment_boundary"
+        status: "CONFIRMED"
+        evidence_id: "ev-6293a72483c34e47"
+        observation: "Executionはmachine/agent、Judgmentはhumanが担うという二層構造を明示している。目標そのものが正しいか、変更すべきか、停止すべきかはhumanが判断すると記載されている。"
+      - role: "ルール担当"
+        source: "skills/loop-design-check/SKILL.md"
+        type: "human_gate_rule"
+        status: "CONFIRMED"
+        evidence_id: "ev-1a57a7f1efb05a4b"
+        observation: "acceptanceやdoneの最終切替をhumanが行い、loop自体はacceptance officerではないと定義している。"
+      - role: "ルール担当"
+        source: "skills/loop-design-check/SKILL.md"
+        type: "independent_judge_rule"
+        status: "CONFIRMED"
+        evidence_id: "ev-ed8dc46eb258bcc1"
+        observation: "Plan / Build / Judgeを分離し、JudgeはBuildから独立し、deterministicな判定を行うべきと定義している。Buildがacceptance conditionを書き換えて合格することも禁止している。"
+      - role: "事実確認担当"
+        source: "skills/continuous-learning-v2/SKILL.md"
+        type: "learning_pipeline"
+        status: "CONFIRMED"
+        evidence_id: "ev-3db1f3af907f6bef"
+        observation: "session activityをhooksで観測し、observations.jsonlへ保存し、background observerがpattern detectionを行い、instinctをskills/commands/agentsへ発展させる構造を記載している。"
+      - role: "ルール担当"
+        source: "skills/continuous-learning-v2/SKILL.md"
+        type: "scope_boundary"
+        status: "CONFIRMED"
+        evidence_id: "ev-07b717ebe6d84737"
+        observation: "project-scoped instinctsとglobalな学習を分離し、cross-project contaminationを抑える設計を採用している。"
+      - role: "事実確認担当"
+        source: "package.json"
+        type: "multi_harness_support"
+        status: "CONFIRMED"
+        evidence_id: "ev-e126dc37708de9f2"
+        observation: "Codex、OpenCode、Cursor、Gemini、Claude Code、terminal workflowsを対象とするpackage descriptionが存在する。"
+  unknown:
+    - id: "unknown-001"
+      statement: "ECCの設計が白神モデルを参照しているかどうか。"
+      status: "UNKNOWN"
+    - id: "unknown-002"
+      statement: "ECCのHuman Judgment設計と白神モデルのHuman Gateが同一の設計思想から生じたものか。"
+      status: "UNKNOWN"
+    - id: "unknown-003"
+      statement: "ECCの各agent/skillが実運用時に記載通り動作するか。"
+      status: "UNKNOWN"
+  shirakami_comparison:
+    purpose: "類似構造の観測であり、同一性の主張ではない"
+    observed_structural_overlap:
+      human_gate:
+        ecc: "loopのacceptance/doneをhumanが最終判断する。"
+        shirakami: "AIが動いても決定権は動かない。"
+        relation: "structural_similarity"
+        causal_relation: "UNKNOWN"
+      evidence:
+        ecc: "continuous-learning-v2ではlearned instinctにEvidence sectionを持たせる。"
+        shirakami: "EvidenceをContextから分離して保持する。"
+        relation: "partial_structural_similarity"
+        causal_relation: "UNKNOWN"
+      semantic_scope:
+        ecc: "project-scoped instinctsとglobal instinctsを分離する。"
+        shirakami: "Contextを持ち運ぶ際にscopeやprovenanceを保持する。"
+        relation: "conceptual_similarity"
+        causal_relation: "UNKNOWN"
+      independent_verification:
+        ecc: "BuildとJudgeを分離し、Judgeの独立性を要求する。"
+        shirakami: "Evidence、Verification、Human Gateを分離する。"
+        relation: "structural_similarity"
+        causal_relation: "UNKNOWN"
+  threadrpg:
+    mode: "public_perspective"
+    purpose: "観測されたEvidenceを横方向に展開し、人間が読みやすい形にする。"
+    authority: "HUMAN"
+    repository_mutation: false
+    threads:
+      - title: "ECCは巨大なAI開発環境である"
+        evidence_ids: ["ev-1c49fe6c6d8c2ef8", "ev-e126dc37708de9f2"]
+      - title: "ECCはAIの自律化を進めながら、判断を人間側に残そうとしている"
+        evidence_ids: ["ev-18589492e6899287", "ev-6293a72483c34e47", "ev-1a57a7f1efb05a4b"]
+      - title: "ECCは学習・ループ・検証を個別の仕組みに分解している"
+        evidence_ids: ["ev-3db1f3af907f6bef", "ev-ed8dc46eb258bcc1"]
+  semantic_handoff:
+    protocol: "github-japanese-context-bridge-v0.1"
+    mode: "read_only"
+    evidence_ids:
+      - "ev-1c49fe6c6d8c2ef8"
+      - "ev-18589492e6899287"
+      - "ev-0e374f9590cfdc45"
+      - "ev-6293a72483c34e47"
+      - "ev-1a57a7f1efb05a4b"
+      - "ev-ed8dc46eb258bcc1"
+      - "ev-3db1f3af907f6bef"
+      - "ev-07b717ebe6d84737"
+      - "ev-e126dc37708de9f2"
+    authority:
+      decision: "HUMAN"
+      repository_mutation: false
+  verification:
+    confirmed:
+      - "Repository-level rules"
+      - "Human judgment boundary in loop-design-check"
+      - "Independent Judge requirement"
+      - "Continuous-learning observation pipeline"
+      - "Project/global learning scope separation"
+      - "Multi-harness package description"
+    not_verified:
+      - "Full runtime behavior of all 277 skills"
+      - "Actual behavior of all 67 agents"
+      - "Causal relationship with Shirakami"
+      - "Author intent"
+  conclusion:
+    statement: "ECCには、AIの実行能力を拡張しながら、高位の判断をhuman側に残す境界設計が明示的に存在する。また、観測・Evidence・学習・loop・Judgeを分離する記述も確認できる。これらは白神モデルとの構造的な比較対象になり得るが、同一実装・影響関係・起源についてはUNKNOWNとして保持する。"
+    next_observation_candidate:
+      - "ECCのautonomous-loops"
+      - "ECCのcontinuous-agent-loop"
+      - "ECCのverification-loop"
+      - "ECCのagent-introspection-debugging"
+      - "ECCのknowledge-ops"
