@@ -2,18 +2,22 @@
 
 **GitHubを「読む」ことから、GitHubを「対話で扱う」ことへ。**
 
-GitHub Context Bridge is an application experiment for making GitHub repository state understandable through conversation.
+GitHub Context Bridge は、GitHub の repository state（リポジトリの状態）を、会話を通して人間が理解しやすくするための Public Prototype です。
 
-It is designed around role-based observation, evidence separation, a public perspective layer called **ThreadRPG**, and a Human Gate that keeps final decisions with the human.
+このPrototypeは、GitHubを単に日本語へ翻訳するのではなく、**誰が何を観測し、何を根拠として言えるのか**を保ったまま、GitHubの情報を日本語で読み解けるようにすることを目指しています。
 
-## Core flow
+## 5分で試す
+
+まず試してみたい方は、[QUICKSTART.md](QUICKSTART.md) を参照してください。
+
+最短の流れは次のとおりです。
 
 ```
 GitHub
   ↓
 役割別観測
   ↓
-Evidence
+Evidence（根拠）
   ↓
 ThreadRPG
   ↓
@@ -24,96 +28,84 @@ Semantic Handoff
 必要ならGitHub操作
 ```
 
-This repository is the **clean public entry point** for GitHub Context Bridge. Experimental and heavy-use development remains in the separate development repository.
+このPrototypeは**読み取り専用**です。GitHubの状態を観測・整理・説明しますが、merge、release、publishなどのrepository変更を自動で実行するものではありません。
 
-## Quickstart\n\nまず5分で試す場合は、[Quickstart](QUICKSTART.md) を参照してください。\n\nこのPrototypeは、GitHubの状態を読む → Evidenceとして保持する → ThreadRPGで読む、という最短体験を目的としています。\n\n## Design principle
+## このPrototypeで見えるもの
 
-> Do not translate only the words. Preserve the context that makes the words meaningful.
+### 1. 役割別に読む
 
-This project is not intended to replace GitHub, its documentation, or human judgment.
+GitHub上の情報を、役割ごとの観測として整理します。
 
-AI may observe, explain, compare, and organize evidence. It does not become the decision authority.
-
-## Human-readable roles
-
-- **問題・要望担当** — Issues and requests
-- **プログラム担当** — Code and implementation
-- **変更担当** — Pull Requests and proposed changes
+- **問題・要望担当** — Issues / requests
+- **プログラム担当** — Code / implementation
+- **変更担当** — Pull Requests / proposed changes
 - **自動テスト担当** — CI / workflow results
-- **作業履歴担当** — Commits and change history
-- **事実確認担当** — Evidence and unknowns
-- **ルール担当** — Protocol and specification alignment
-- **最終判断** — Human decision
+- **作業履歴担当** — Commits / change history
+- **事実確認担当** — Evidence / unknowns
+- **ルール担当** — Protocol / specification
+- **最終判断** — Human
 
-When several roles are involved, their observations are preserved as parallel evidence in **ThreadRPG**. Agreement, disagreement, missing evidence, and items requiring human confirmation remain visible.
+複数の役割から得られた観測は、Evidenceとして保持されます。
 
-## Progressive explanation
+### 2. Evidenceを残す
 
-The same Context can be presented at different depths without changing its evidence or authority.
+「そう見える」ことと「GitHub上の根拠がある」ことを分けます。
+
+GitHubから明示的に確認できる関係は `CONFIRMED` として扱い、根拠が足りない関係は `UNKNOWN` のまま残します。
+
+つまり、
+
+> 分からないものを、分かったことにしない。
+
+これがこのPrototypeの重要な境界です。
+
+### 3. ThreadRPGで読む
+
+ThreadRPGは、複数の観測を横方向につなげて読むための公開Perspective Layerです。
+
+ここで重要なのは、ThreadRPGが最終判断をするわけではないことです。
+
+**観測を読みやすくすることと、判断することを分離します。**
+
+### 4. 説明の深さを変える
+
+同じContextを、必要に応じて異なる深さで読むことができます。
 
 ```
-Level 1  plain       → 状態を普通の日本語で理解
+Level 1  plain       → 普通の日本語で理解
 Level 2  contextual  → なぜそう言えるか
 Level 3  technical   → Evidence / 技術構造
 Level 4  protocol    → 担当者構造 / Evidence
 Level 5  deep        → Context / Protocol / Human Gate
 ```
 
-The user controls the depth and can move back and forth. A change in explanation depth is a **presentation handoff**, not an authorization handoff.
+説明の深さや言語を変えても、EvidenceやHuman Gateの意味は変わりません。
 
-For example:
+これは**表示方法の変更であって、権限の変更ではありません。**
 
-- 「簡単に」 → Level 1
-- 「もう少し詳しく」 → Level 2
-- 「Evidenceを見せて」 → Level 3
-- 「担当者の構造を見せて」 → Level 4
-- 「内部構造まで見せて」 → Level 5
+## 言語について
 
-The bridge records this distinction explicitly so that learning the system does not accidentally grant the system authority.
+現在のPrototypeでは、日本語（`ja`）と英語（`en`）を扱えます。
 
-## User presentation profile
+ここでの言語切り替えは、あくまでPresentation Layerです。
 
-The bridge keeps a user-controlled presentation profile separate from repository state.
-
-```yaml
-language: ja
-explanation_level: 1
-user_controlled: true
-evidence_invariant: true
-authority_invariant: true
 ```
-
-The profile is a UI preference, not a permission model. It may change language or explanation depth, but it cannot authorize merge, release, publication, or other repository-changing actions.
-
-## Language-aware explanation
-
-The bridge treats language as a presentation choice, not an evidence boundary.
-
-```text
 Repository
    ↓
 Evidence / Context
    ↓
-User-selected language + explanation depth
+言語 + 説明レベル
    ↓
-Human-readable explanation
+人間向けの説明
 ```
 
-The same Context can be presented in different languages without changing Evidence, UNKNOWN states, role observations, or Human Gate requirements.
+日本語にしたからといって、Evidenceが変わったり、repositoryを変更する権限が発生したりすることはありません。
 
-Current prototype languages:
-- `ja` — 日本語
-- `en` — English
+## Change Lineage（変更の流れ）
 
-Additional languages can be added as presentation profiles without changing the underlying Evidence or Human Gate.
+GitHub上で確認できる情報から、変更に関係するartifactのつながりを読み取ります。
 
-This is intentionally modeled as a presentation handoff. Changing language or explanation depth does not grant repository-changing authority.
-
-## Change lineage
-
-The bridge also reconstructs a read-only **change lineage** from GitHub evidence.
-
-```text
+```
 Issue
   ↓
 Pull Request
@@ -125,76 +117,74 @@ Workflow
 Merge
 ```
 
-Where GitHub provides explicit evidence, the relationship is recorded as `CONFIRMED`. When the available evidence does not establish the relationship, it remains `UNKNOWN`.
+明示的な根拠がある関係は `CONFIRMED`、根拠が足りない関係は `UNKNOWN` として扱います。
 
-For pull requests, the bridge can preserve evidence such as:
+このPrototypeは、artifactの並びから因果関係を勝手に推測しません。
 
-- explicit Issue references in the PR description;
-- PR head and base commits;
-- changed files;
-- review states;
-- workflow runs matched by commit SHA;
-- merge state and merge commit.
+## Human Gate
 
-The lineage is descriptive, not causal speculation. It does not turn a sequence of GitHub artifacts into an approval or recommendation.
+GitHub Context Bridgeでは、
 
-## Public boundary
+**AIが情報を整理しても、決定権は人間に残ります。**
 
-The public runtime intentionally stops at the ThreadRPG perspective layer.
+AIは観測・説明・比較・整理を支援できます。
 
-```text
-Evidence
+しかし、説明したこと自体がmerge、release、publishなどの許可になることはありません。
+
+## Public Boundary
+
+このrepositoryは、GitHub Context Bridgeの**Public Prototype / 体験版**です。
+
+公開版では、GitHubを読み、Evidenceを保持し、ThreadRPGで体験するところまでを公開します。
+
+より深いShirakami processingや内部Coreは、このrepositoryの公開範囲には含めません。
+
+これは「内部Coreが存在しない」という意味ではなく、**公開範囲を意図的に分けている**ということです。
+
+## Shirakamiとの関係
+
+GitHub Context Bridgeは、白神モデルの考え方をGitHubという具体的な環境に適用する独立したアプリケーション実験です。
+
+白神モデル側のContext、Evidence、Protocol、Semantic Handoff、Verification、Human Gateなどの考え方を、GitHubの観測・説明・引き継ぎに適用しています。
+
+## Self-observation
+
+このPrototypeには、GitHub Actionsを含むGitHubの状態を読み取るためのadapterと、自己観測runnerがあります。
+
+```
+GitHub API
+   ↓
+github_snapshot.py / github_actions.py
+   ↓
+Role Observation
    ↓
 ThreadRPG
    ↓
 Semantic Handoff
    ↓
+Context
+   ↓
 Human Gate
 ```
 
-Deeper Shirakami processing remains outside this public repository. This is a publication boundary, not a claim about the broader Shirakami model.
+GitHub Context Bridge自身を、GitHub Context Bridgeで観測することもできます。
 
-## Relationship to Shirakami
+Actionsの情報が確認できない場合、それを「成功」とは解釈せず、Evidenceが不足している状態として扱います。
 
-This repository is an independent application experiment derived from the Shirakami model.
+## 開発状況
 
-Shirakami provides the broader concepts of Context, Evidence, Protocol, Semantic Handoff, Verification, and Human Gate. This repository applies those ideas specifically to GitHub.
+**Early-stage prototype / specification work**
 
-## Status
+このrepositoryは、まず「実際に触ってみる」ための公開入口です。
 
-Early-stage prototype / specification work.
+実験的・内部向けの開発は別repositoryで行い、このrepositoryには公開対象だけを置きます。
 
-The development repository remains separate so experimental/internal history is not exposed through this public repository's Git history.
+## Design principle
 
+> Do not translate only the words. Preserve the context that makes the words meaningful.
 
-## Self-observation proof
+言葉だけを翻訳するのではなく、**その言葉が意味を持つためのContextを保つ。**
 
-The bridge now contains a read-only GitHub Actions adapter and a self-observation runner.
+---
 
-The intended execution is:
-
-    GITHUB_TOKEN=... python -m src.self_observe
-
-The runner reads the repository, issues, pull requests, commits, and recent GitHub Actions workflow runs, then passes those observations through the role layer into a read-only Context.
-
-It does not create or modify GitHub state.
-
-The repository can therefore begin testing the bridge against itself: **GitHub Context Bridge observes GitHub Context Bridge.**
-
-### Implementation boundary
-
-    GitHub API
-       ↓
-    github_snapshot.py / github_actions.py
-       ↓
-    Role Observation
-       ↓
-    ThreadRPG
-       ↓
-    Semantic Handoff
-       ↓
-    Context
-       ↓
-    Human Gate
-
-The Actions adapter is intentionally separate from the base snapshot adapter so that absence of workflow evidence remains `UNKNOWN` rather than being interpreted as a passing state.
+**GitHub Context Bridge — 読める。根拠が残る。判断は人間にある。**
