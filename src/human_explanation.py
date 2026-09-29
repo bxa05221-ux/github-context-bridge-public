@@ -134,7 +134,7 @@ def explain_context(snapshot: dict[str, Any], level: int = 1, language: str = "j
             "事実確認、ルールという役割ごとに観測を分けています。"
         )
         lines.append(
-            "それらを照合してContextにまとめる層を「保守安価（担当者間会議）」としています。"
+            "それらを照合して、人間が確認できるContextにまとめます。"
         )
 
     if level >= 5:
@@ -176,7 +176,7 @@ def _explain_context_en(snapshot: dict[str, Any], level: int) -> str:
     if level >= 3:
         lines.append("Lineage: Issue→PR=%s / PR→Commit=%s / Commit→Workflow=%s / PR→Merge=%s / Workflow→Merge=%s." % (chain.get("issue_to_pr", "UNKNOWN"), chain.get("pr_to_commit", "UNKNOWN"), chain.get("commit_to_workflow", "UNKNOWN"), chain.get("pr_to_merge", "UNKNOWN"), chain.get("workflow_to_merge", "UNKNOWN")))
         lines.append("GitHub observations are treated as Evidence and assembled into Context.")
-    if level >= 4: lines.append("Observations are separated by role and reconciled through 保守安価, the cross-role conference layer.")
+    if level >= 4: lines.append("Observations are separated by role and reconciled into a human-readable Context.")
     if level >= 5: lines.append("In Shirakami terms: GitHub as Landscape → Evidence → Protocol → Context → Human Gate.")
     lines.append(f"Explanation level: {level} ({LEVELS[level]}). Repository-changing decisions remain with a human.")
     return "\n".join(lines)
