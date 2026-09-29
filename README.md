@@ -1,5 +1,7 @@
 # GitHub Context Bridge
 
+[🇯🇵 日本語](#github-context-bridge)　|　[🇺🇸 English](#english)
+
 **GitHubを「読む」ことから、GitHubを「対話で扱う」ことへ。**
 
 GitHub Context Bridge は、GitHub の repository state（リポジトリの状態）を、会話を通して人間が理解しやすくするための Public Prototype です。
