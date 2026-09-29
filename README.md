@@ -24,7 +24,7 @@ Evidence
 必要ならGitHub操作
 ```
 
-The project is currently **private and experimental**. This repository is the development and **heavy-use implementation home**; a separate clean publication repository is planned for the lightweight public entry point.
+This repository is the **clean public entry point** for GitHub Context Bridge. Experimental and heavy-use development remains in the separate development repository.
 
 ## Design principle
 
@@ -105,6 +105,8 @@ Current prototype languages:
 - `ja` — 日本語
 - `en` — English
 
+Additional languages can be added as presentation profiles without changing the underlying Evidence or Human Gate.
+
 This is intentionally modeled as a presentation handoff. Changing language or explanation depth does not grant repository-changing authority.
 
 ## Change lineage
@@ -144,7 +146,7 @@ It handles:
 
 - GitHub observation;
 - Evidence creation and stable Evidence IDs;
-- perspective processing, including deeper Shirakami layers used on the heavy-use side;
+- the public perspective layer, currently ThreadRPG;
 - Semantic Handoff;
 - Human Gate preservation.
 
@@ -179,7 +181,7 @@ Shirakami provides the broader concepts of Context, Evidence, Protocol, Semantic
 
 Early-stage prototype / specification work.
 
-The repository remains private as the heavy-use development home. A separate public repository can be created from a clean publication snapshot so experimental/internal history is not exposed merely because it exists here.
+The development repository remains separate so experimental/internal history is not exposed through this public repository's Git history.
 
 
 ## Self-observation proof
