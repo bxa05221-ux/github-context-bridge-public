@@ -66,7 +66,7 @@ class ContextBridgeTest(unittest.TestCase):
             perspectives["perspective_stack"]["thread_rpg"]["threads"][0]["evidence_id"],
             ids[0],
         )
-        self.assertEqual(perspectives["order"][2:], ["ThreadRPG"])
+        self.assertEqual(perspectives["order"], ["ThreadRPG"])
         self.assertEqual(
             perspectives["perspective_stack"]["phase_rotation_eisenhower"]["status"],
             "boundary_only",
