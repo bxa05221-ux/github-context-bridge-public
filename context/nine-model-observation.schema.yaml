@@ -1,0 +1,68 @@
+schema: shirakami/nine-model-observation
+version: "0.1"
+status: prototype
+
+description: Evidence-preserving record for structural comparison of an external GitHub repository with the Shirakami nine-model overlay.
+
+required:
+  - repository
+  - observed_at
+  - models
+  - provenance
+  - human_review
+
+properties:
+  repository:
+    type: string
+  observed_at:
+    type: string
+  models:
+    type: object
+    additionalProperties:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          enum: [high, medium, low, UNKNOWN]
+        observed:
+          type: string
+        interpretation:
+          type: string
+        evidence:
+          type: array
+        confidence:
+          enum: [high, medium, low, UNKNOWN]
+  provenance:
+    type: object
+    required:
+      - repository_ownership
+      - fork_status
+      - architecture_authorship
+      - direct_reference_to_shirakami
+      - influence
+      - causal_relationship
+    properties:
+      repository_ownership:
+        enum: [observed, UNKNOWN]
+      fork_status:
+        enum: [observed, UNKNOWN]
+      upstream_reference:
+        type: string
+      architecture_authorship:
+        enum: [observed, UNKNOWN]
+      direct_reference_to_shirakami:
+        enum: [CONFIRMED, UNKNOWN]
+      influence:
+        enum: [CONFIRMED, UNKNOWN]
+      causal_relationship:
+        enum: [CONFIRMED, UNKNOWN]
+  human_review:
+    type: object
+    required:
+      - status
+    properties:
+      status:
+        enum: [pending, reviewed]
+      reviewer_note:
+        type: string
