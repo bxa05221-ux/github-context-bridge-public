@@ -1,0 +1,52 @@
+matome:
+  title: "Third-Party Repository Observation: octus-bridge"
+  codename: "Follower Observation / octus-bridge"
+  status: "observed"
+  date: "2026-10-02"
+
+  landscape:
+    repository: "vasuquantdev/octus-bridge"
+    visibility: "public"
+    fork: false
+    language: "Rust"
+    license: "Apache-2.0"
+    created_at: "2026-07-13T18:41:18Z"
+    default_branch: "master"
+    described_scope: "high-performance relay node validating cross-chain transfer events across Everscale, EVM-compatible networks, and Solana"
+
+  observation:
+    authority: "HUMAN"
+    repository_mutation: false
+    observation_mode: "read_only"
+    facts:
+      - "Repository metadata describes a relay node for cross-chain transfer events."
+      - "The description states that it observes bridge contracts and verifies event data."
+      - "The description states that valid events are signed and invalid events rejected on behalf of a registered staker."
+
+  classification:
+    primary: "SYSTEMS / BLOCKCHAIN"
+    bridge_type: "cross-chain data/event relay"
+
+  shirakami_comparison:
+    purpose: "avoid name-based false similarity"
+    observed_overlap:
+      - axis: "Evidence / verification"
+        relation: "conceptual_similarity"
+        note: "Both descriptions contain explicit verification language, but the domains and roles differ."
+      - axis: "Bridge"
+        relation: "name_similarity_only"
+        note: "The repository's bridge is a blockchain interoperability bridge, not a context/handoff bridge."
+    causal_relation: "UNKNOWN"
+    influence: "UNKNOWN"
+
+  verification:
+    confirmed:
+      - "Repository metadata"
+      - "Public visibility"
+      - "Non-fork status"
+      - "Rust language metadata"
+      - "Apache-2.0 license metadata"
+    not_verified:
+      - "Full runtime behavior"
+      - "Author intent"
+      - "Any relationship with Shirakami"
