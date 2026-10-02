@@ -1,0 +1,66 @@
+matome:
+  title: "Third-Party Repository Observation: AbSomeone AI-related repositories"
+  codename: "Follower Observation / AbSomeone"
+  status: "observed"
+  date: "2026-10-02"
+
+  landscape:
+    repositories:
+      - repository: "AbSomeone/OpenSpec"
+        visibility: "public"
+        fork: true
+        parent: "Fission-AI/OpenSpec"
+        description: "Spec-driven development for AI coding assistants."
+        created_at: "2025-12-21T07:21:35Z"
+        license: "MIT"
+      - repository: "AbSomeone/moltbot-new"
+        visibility: "public"
+        fork: true
+        parent: "Joinsyna-Co-Ltd/moltbot-new"
+        description: "Moltbot adds Windows version support and Chinese"
+        created_at: "2026-01-29T01:05:47Z"
+        license: "MIT"
+
+  observation:
+    authority: "HUMAN"
+    repository_mutation: false
+    observation_mode: "read_only"
+
+    facts:
+      - "OpenSpec is a fork of Fission-AI/OpenSpec."
+      - "The parent repository describes OpenSpec as spec-driven development for AI coding assistants."
+      - "moltbot-new is a fork of Joinsyna-Co-Ltd/moltbot-new."
+      - "The fork description states that it adds Windows support and Chinese."
+
+  classification:
+    openspec: "SPEC_DRIVEN / AI_CODING"
+    moltbot_new: "AGENT / APPLICATION"
+
+  shirakami_comparison:
+    openspec:
+      observed_overlap:
+        - axis: "Protocol / specification"
+          relation: "conceptual_similarity"
+          note: "Specification is an explicit organizing layer, but the repository is a fork and the implementation domain differs."
+      causal_relation: "UNKNOWN"
+      influence: "UNKNOWN"
+    moltbot_new:
+      observed_overlap: []
+      causal_relation: "UNKNOWN"
+      influence: "UNKNOWN"
+
+  provenance_guard:
+    - "Do not attribute parent-project design to the fork owner without evidence."
+    - "Do not infer influence from following or repository proximity."
+
+  verification:
+    confirmed:
+      - "Fork relationships"
+      - "Parent repositories"
+      - "Repository descriptions"
+      - "Creation dates"
+      - "Public visibility"
+    not_verified:
+      - "Author intent"
+      - "Runtime behavior"
+      - "Relationship with Shirakami"
