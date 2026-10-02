@@ -1,0 +1,84 @@
+matome:
+  title: "Follower Repository Landscape"
+  codename: "Follower Observation / Shirakami Context Bridge"
+  status: "initial-observation"
+  date: "2026-10-02"
+
+  source_boundary:
+    follower_list: "user-provided public GitHub follower page snapshot"
+    repository_access: "public GitHub repository metadata"
+    observation_mode: "read_only"
+
+  policy:
+    authority: "HUMAN"
+    repository_mutation: false
+    unknown_stays_unknown: true
+    intent_inference: false
+    influence_inference: false
+    competence_inference: false
+
+  candidates_observed:
+    - user: "vasuquantdev"
+      repositories:
+        - "vasuquantdev/octus-bridge"
+      primary_classification: "SYSTEMS / BLOCKCHAIN"
+      observation_status: "observed"
+
+    - user: "AbSomeone"
+      repositories:
+        - "AbSomeone/OpenSpec"
+        - "AbSomeone/moltbot-new"
+      primary_classification: "AI_CODING / SPEC_DRIVEN / AGENT"
+      observation_status: "observed"
+
+    - user: "dbunt1tled"
+      repositories:
+        - "dbunt1tled/everything-claude-code"
+        - "dbunt1tled/local-rag"
+      primary_classification: "AI_AGENT / RAG"
+      observation_status: "observed"
+
+  comparison_axes:
+    - "Context"
+    - "Evidence"
+    - "Verification"
+    - "Human Gate / human authority"
+    - "Handoff"
+    - "Autonomy boundary"
+    - "Observation / introspection"
+    - "Learning / memory"
+    - "Specification / planning"
+
+  relation_policy:
+    following: "FACT when present in supplied follower snapshot"
+    repository_similarity: "OBSERVATION"
+    temporal_overlap: "FACT only when dates are independently observable"
+    influence: "UNKNOWN"
+    causal_relationship: "UNKNOWN"
+    shared_origin: "UNKNOWN"
+
+  next_candidates:
+    - "abdulwasio2521"
+    - "kgeminicdev"
+    - "AbdulRehman393"
+    - "seehiong"
+    - "coda-coda-23"
+    - "altyebv"
+    - "codewithQasimAli"
+    - "takumi-sato0209"
+    - "MaxCode917"
+    - "mcdev7777"
+    - "shinobi-coder701"
+    - "polystrategist"
+    - "gaqx"
+    - "sungeer"
+    - "IDouble"
+    - "kh0kamoni"
+    - "rahuloraj"
+    - "aibers"
+    - "shahidazam2020-oss"
+    - "JohnMwendwa"
+    - "SyedAliHaider02"
+    - "md-abu-kayser"
+    - "Ali-hey-0"
+    - "yumiaura"
