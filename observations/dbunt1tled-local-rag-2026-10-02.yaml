@@ -1,0 +1,56 @@
+matome:
+  title: "Third-Party Repository Observation: local-rag"
+  codename: "Follower Observation / local-rag"
+  status: "observed"
+  date: "2026-10-02"
+
+  landscape:
+    repository: "dbunt1tled/local-rag"
+    visibility: "public"
+    fork: false
+    language: "Python"
+    created_at: "2025-06-10T14:58:11Z"
+    default_branch: "main"
+    described_scope: "Local RAG app chat, search and analyse PDF files"
+    topics:
+      - "langchain"
+      - "llama3"
+      - "python"
+      - "streamlit"
+
+  observation:
+    authority: "HUMAN"
+    repository_mutation: false
+    observation_mode: "read_only"
+    facts:
+      - "The repository describes itself as a local RAG application for chat, search, and PDF analysis."
+      - "Repository metadata identifies Python as the primary language."
+      - "Repository topics include LangChain, Llama 3, Python, and Streamlit."
+
+  classification:
+    primary: "RAG_KNOWLEDGE"
+
+  shirakami_comparison:
+    observed_overlap:
+      - axis: "Context / knowledge retrieval"
+        relation: "conceptual_similarity"
+        note: "Both involve externalized information used by an AI system, but retrieval and context-handoff are distinct mechanisms."
+    causal_relation: "UNKNOWN"
+    influence: "UNKNOWN"
+
+  relation_to_ecc:
+    same_owner: true
+    relation: "co-located public repository"
+    causal_relation: "UNKNOWN"
+
+  verification:
+    confirmed:
+      - "Repository metadata"
+      - "Public visibility"
+      - "Non-fork status"
+      - "Python metadata"
+      - "Repository description and topics"
+    not_verified:
+      - "Full runtime behavior"
+      - "Author intent"
+      - "Relationship with Shirakami"
